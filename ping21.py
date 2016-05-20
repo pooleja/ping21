@@ -56,7 +56,7 @@ def ping21(uri, num_packets=3, packet_size=64, wait_timeout=3.0):
     Returns:
         dict: A dictionary containing ping information.
 
-    """    
+    """
     uri = uri.replace('https://', '').replace('http://', '')
 
     if not is_compatible():
@@ -64,10 +64,12 @@ def ping21(uri, num_packets=3, packet_size=64, wait_timeout=3.0):
 
     if platform.system() == 'Darwin':
         wait_timeout = wait_timeout * 1000
-    
-    try:    
-        out = subprocess.check_output(['ping', '-c', str(num_packets),
-            '-s', str(packet_size), '-W', str(wait_timeout), str(uri)]
+
+    try:
+        out = subprocess.check_output(
+            ['ping', '-c', str(num_packets),
+             '-s', str(packet_size), '-W', str(wait_timeout), str(uri)],
+            stderr=subprocess.STDOUT
         ).decode('unicode_escape')
     except subprocess.CalledProcessError:
         raise ValueError("ping cannot be performed on url={}".format(uri))
