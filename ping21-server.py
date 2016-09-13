@@ -96,6 +96,6 @@ if __name__ == '__main__':
                 raise ValueError("error starting ping21-server.py daemon")
         else:
             print("Server running...")
-            app.run(host='0.0.0.0', port=6002)
+            app.run(host='::', port=6002)
 
     run()
