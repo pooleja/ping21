@@ -9,7 +9,7 @@ import subprocess
 import sys
 from urllib.parse import urlparse
 
-__all__ = ["ping21", "getHostname"]
+__all__ = ["ping21", "getHostname", "is_compatible", "get_server_info"]
 
 def getHostname(uri):
     """ Cleans a provided uri

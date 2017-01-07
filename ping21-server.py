@@ -16,6 +16,7 @@ from two1.wallet.two1_wallet import Wallet
 from two1.bitserv.flask import Payment
 
 from ping21 import ping21, getHostname
+from get21 import get21
 
 app = Flask(__name__)
 
@@ -66,6 +67,26 @@ def ping():
     except ValueError as e:
         return 'HTTP Status 400: {}'.format(e.args[0]), 400
 
+
+@app.route('/get')
+@payment.required(5)
+def get():
+    """ Runs an HTTP GET on the provided url
+
+    Returns: HTTPResponse 200 with a json containing the request info.
+    HTTP Response 400 if no uri is specified or the uri is malformed/cannot be requested.
+    """
+    try:
+        uri = request.args['uri']
+    except KeyError:
+        return 'HTTP Status 400: URI query parameter is missing from your request.', 400
+
+    try:
+        data = get21(uri)
+        response = json.dumps(data, indent=4, sort_keys=True)
+        return response
+    except ValueError as e:
+        return 'HTTP Status 400: {}'.format(e.args[0]), 400
 
 if __name__ == '__main__':
     import click

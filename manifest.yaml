@@ -36,6 +36,23 @@ paths:
             type: object
       summary: Return ping statistics between this device and a given domain
         or IP.
+  /get:
+    get:
+      consumes: [application/x-www-form-urlencoded]
+      produces: [application/json]
+      responses:
+        200:
+          description: HTTP GET statistics and information on server location.
+          schema:
+            properties:
+              get:
+                elapsed_ms: {type: integer}
+                reason: {type: string}
+                status_code: {type: integer}
+                type: object
+              server: {$ref: '#/definitions/Server'}
+            type: object
+      summary: Return HTTP GET statistics between this device and a given URL.
 schemes: [http]
 swagger: '2.0'
 x-21-manifest-path: /manifest
