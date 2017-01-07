@@ -32,14 +32,26 @@ def get21(uri, wait_timeout=5, headers=None):
     if not is_compatible():
         return
 
+    # Create a start timer
     start = dt.datetime.now()
-    ret = requests.get(uri, timeout=wait_timeout, headers=headers)
+
+    # Initiate the HTTP GET
+    res = {}
+    try:
+        ret = requests.get(uri, timeout=wait_timeout, headers=headers)
+
+        # Success
+        res = {'status_code' : ret.status_code, 'reason' : ret.reason}
+
+    except requests.exceptions.RequestException as ex:
+        # Failure
+        res = {'status_code' : 500, 'reason' : "{0}".format(ex)}
+
+
+    # Create an end timer and get elapsed time in milliseconds
     finish = dt.datetime.now()
-
-    # Get elapsed time in milliseconds
     elapsed = int((finish - start).total_seconds() * 1000)
-
-    res = {'status_code' : ret.status_code, 'reason' : ret.reason, 'elapsed_ms': elapsed}
+    res['elapsed_ms'] = elapsed
 
     info = {
         'get': res,
